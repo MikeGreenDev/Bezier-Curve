@@ -1,7 +1,6 @@
 #include "raylib.h"
 #include "raymath.h"
-#include <stdio.h>
-#define darray_IMPLEMENTATION
+#define DARRAY_IMPLEMENTATION
 #include "darray.h"
 
 int main(void) {
@@ -17,11 +16,18 @@ int main(void) {
     // Index that is currently being dragged by the mouse
     int dragIndex = -1;
     // The amount of squares inbetween handles
-    int sampleSize = 20;
+    int sampleSize = 50;
     while (!WindowShouldClose()) {
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
+
+        float mouseWheel = GetMouseWheelMove();
+        if (mouseWheel != 0)
+        {
+            sampleSize += (int)mouseWheel;
+            if (sampleSize < 10) sampleSize = 10;
+        }
 
         Vector2 mouse = GetMousePosition();
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
