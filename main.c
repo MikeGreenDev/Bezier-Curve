@@ -26,12 +26,17 @@ int main(void) {
         DrawText("LMB - Make handles", 30, 110, 25, LIGHTGRAY);
         DrawText("RMB - Move handles", 30, 160, 25, LIGHTGRAY);
         DrawText("Mouse Wheel - Change sample size", 30, 210, 25, LIGHTGRAY);
+        DrawText("R - Clear the screen", 30, 260, 25, LIGHTGRAY);
+
+        if (IsKeyPressed(KEY_R)) {
+            darrayClear(points);
+        }
 
         float mouseWheel = GetMouseWheelMove();
-        if (mouseWheel != 0)
-        {
+        if (mouseWheel != 0) {
             sampleSize += (int)mouseWheel;
-            if (sampleSize < 10) sampleSize = 10;
+            if (sampleSize < 10)
+                sampleSize = 10;
         }
 
         Vector2 mouse = GetMousePosition();
