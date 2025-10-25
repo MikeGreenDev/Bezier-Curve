@@ -22,6 +22,11 @@ int main(void) {
 
         ClearBackground(RAYWHITE);
 
+        DrawText("Bezier Curves", 30, 50, 50, LIGHTGRAY);
+        DrawText("LMB - Make handles", 30, 110, 25, LIGHTGRAY);
+        DrawText("RMB - Move handles", 30, 160, 25, LIGHTGRAY);
+        DrawText("Mouse Wheel - Change sample size", 30, 210, 25, LIGHTGRAY);
+
         float mouseWheel = GetMouseWheelMove();
         if (mouseWheel != 0)
         {
