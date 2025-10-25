@@ -18,6 +18,8 @@ int main(void) {
     // The amount of squares inbetween handles
     int sampleSize = 50;
     while (!WindowShouldClose()) {
+        Vector2 size = {.x = 20, .y = 20};
+
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
@@ -41,19 +43,19 @@ int main(void) {
 
         Vector2 mouse = GetMousePosition();
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            darrayPush(points, mouse);
+            darrayPush(points, ((Vector2){.x = mouse.x - size.x / 2,
+                                          .y = mouse.y - size.y / 2}));
         }
 
         int len = darrayLength(points);
-        Vector2 size = {.x = 20, .y = 20};
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
             // Go through the handles and see if the RMB happened on one of them
             for (int i = 0; i < len; i++) {
-                if (CheckCollisionPointRec(
-                        mouse, (Rectangle){.x = points[i].x - size.x / 2,
-                                           .y = points[i].y - size.y / 2,
-                                           .width = size.x,
-                                           .height = size.y})) {
+                if (CheckCollisionPointRec(mouse,
+                                           (Rectangle){.x = points[i].x,
+                                                       .y = points[i].y,
+                                                       .width = size.x,
+                                                       .height = size.y})) {
                     dragIndex = i;
                     break;
                 }
@@ -62,7 +64,8 @@ int main(void) {
 
         // If currently dragging something, move it's pos
         if (dragIndex != -1) {
-            points[dragIndex] = mouse;
+            points[dragIndex] = ((Vector2){.x = mouse.x - size.x / 2,
+                                           .y = mouse.y - size.y / 2});
             if (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)) {
                 dragIndex = -1;
             }
@@ -83,28 +86,18 @@ int main(void) {
 
                     Vector2 pos = Vector2Lerp(Vector2Lerp(d1, d2, t),
                                               Vector2Lerp(d2, d3, t), t);
-                    DrawRectangleV((Vector2){.x = pos.x - size.x / 2,
-                                             .y = pos.y - size.y / 2},
-                                   size, BLUE);
+                    DrawRectangleV(pos, size, BLUE);
                 }
 
                 // Draw the handles last for the correct z-index
-                DrawRectangleV(
-                    (Vector2){.x = p2.x - size.x / 2, .y = p2.y - size.y / 2},
-                    size, RED);
-                DrawRectangleV(
-                    (Vector2){.x = p3.x - size.x / 2, .y = p3.y - size.y / 2},
-                    size, RED);
-                DrawRectangleV(
-                    (Vector2){.x = p4.x - size.x / 2, .y = p4.y - size.y / 2},
-                    size, RED);
+                DrawRectangleV(p2, size, RED);
+                DrawRectangleV(p3, size, RED);
+                DrawRectangleV(p4, size, RED);
 
                 i += 2;
             }
             // Draw the first handle last for the correct z-index
-            DrawRectangleV(
-                (Vector2){.x = p1.x - size.x / 2, .y = p1.y - size.y / 2}, size,
-                RED);
+            DrawRectangleV(p1, size, RED);
         }
 
         EndDrawing();
